@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const internalLinks = document.querySelectorAll('a[href^="#"]');
   const ctaButtons = document.querySelectorAll('.cta-button');
   const themeToggle = document.getElementById('themeToggle');
+  const scrollToTopBtn = document.getElementById('scrollToTop');
+  const header = document.querySelector('header');
 
   // Navigation Menu Functions
   function toggleMenu() {
@@ -121,6 +123,119 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // Scroll to Top Button Functionality
+  if (scrollToTopBtn) {
+    // Show/hide scroll to top button
+    function toggleScrollToTopButton() {
+      if (window.pageYOffset > 300) {
+        scrollToTopBtn.classList.add('visible');
+      } else {
+        scrollToTopBtn.classList.remove('visible');
+      }
+    }
+
+    // Scroll to top when button is clicked
+    scrollToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // Check scroll position on scroll
+    window.addEventListener('scroll', toggleScrollToTopButton);
+    
+    // Check initial scroll position
+    toggleScrollToTopButton();
+  }
+
+  // Header Scroll Effect
+  let lastScroll = 0;
+  function handleHeaderScroll() {
+    const currentScroll = window.pageYOffset;
+    
+    if (currentScroll > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+    
+    lastScroll = currentScroll;
+  }
+
+  window.addEventListener('scroll', handleHeaderScroll);
+
+  // Intersection Observer for Scroll Animations
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  // Observe all sections
+  const sections = document.querySelectorAll('section');
+  sections.forEach(section => {
+    observer.observe(section);
+  });
+
+  // Add subtle parallax effect to home section
+  const homeSection = document.getElementById('home');
+  if (homeSection) {
+    window.addEventListener('scroll', function() {
+      const scrolled = window.pageYOffset;
+      const parallaxSpeed = 0.5;
+      if (scrolled < window.innerHeight) {
+        homeSection.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
+      }
+    });
+  }
+
+  // Enhanced hover effects for CTA buttons
+  if (ctaButtons) {
+    ctaButtons.forEach(button => {
+      button.addEventListener('mouseenter', function(e) {
+        const rect = button.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        button.style.setProperty('--x', x + 'px');
+        button.style.setProperty('--y', y + 'px');
+      });
+    });
+  }
+
+  // Smooth scroll behavior for all internal links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        const headerOffset = 80;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+        
+        closeMenu();
+      }
+    });
+  });
+
   // Event Listeners
   if (hamburger) {
     hamburger.addEventListener('click', toggleMenu);
@@ -137,13 +252,33 @@ document.addEventListener('DOMContentLoaded', function() {
     internalLinks.forEach(anchor => anchor.addEventListener('click', handleInternalLinkClick));
   }
 
-  if (ctaButtons) {
-    ctaButtons.forEach(button => button.addEventListener('click', handleInternalLinkClick));
-  }
+  // Add loading animation
+  window.addEventListener('load', function() {
+    document.body.classList.add('loaded');
+  });
+
+  // Prevent animations on window resize
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    document.body.classList.add('resize-animation-stopper');
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      document.body.classList.remove('resize-animation-stopper');
+    }, 400);
+  });
 
   // Add event listener removal on page unload
   window.addEventListener('unload', function() {
     document.removeEventListener('click', handleOutsideClick);
     window.removeEventListener('resize', handleWindowResize);
   });
+
+  // Add smooth reveal animation on page load
+  setTimeout(() => {
+    document.querySelectorAll('section').forEach((section, index) => {
+      setTimeout(() => {
+        section.style.animationDelay = `${index * 0.1}s`;
+      }, index * 100);
+    });
+  }, 100);
 });
