@@ -1,47 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aravind Subramanian</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Aravind Subramanian — Autodidact, Entrepreneur, Techno‑optimist</title>
+    <meta name="description" content="Aravind Subramanian — Autodidact, entrepreneur, techno‑optimist. Exploring technology, trading, and building impactful products.">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="/">
+    <meta property="og:title" content="Aravind Subramanian">
+    <meta property="og:description" content="Autodidact | Entrepreneur | Techno‑optimist">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+      // Apply saved or system theme ASAP to avoid flash
+      (function() {
+        try {
+          var saved = localStorage.getItem('theme');
+          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var theme = saved || (prefersDark ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) { /* no-op */ }
+      })();
+    </script>
+
+    <link rel="stylesheet" href="style.css">
  </head>
  <body>
+    <a class="skip-link" href="#home">Skip to content</a>
     <header>
       <div class="nav-content">
-        <div class="hamburger" id="hamburger-menu">
+        <a class="brand" href="#home" aria-label="Go to home">AS</a>
+        <button class="hamburger" id="hamburger-menu" aria-label="Open menu" aria-controls="nav-menu" aria-expanded="false">
           <span></span>
           <span></span>
           <span></span>
-        </div>
-        <nav class="nav-menu" id="nav-menu">
+        </button>
+        <nav class="nav-menu" id="nav-menu" aria-label="Primary">
           <ul>
             <li class="theme-item">
-              <button id="themeToggle" class="theme-toggle">
+              <button id="themeToggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle color theme">
                 <div class="toggle-circle"></div>
                 <span class="toggle-text">dark mode</span>
               </button>
             </li>
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
             <li><a href="#book-highlights">Book Highlights</a></li>
             <li><a href="#currently-reading">Currently reading</a></li>
           </ul>
         </nav>
-   
         <div class="social-links">
-          <a href="https://x.com/Aravind__77" target="_blank" rel="noopener noreferrer">
-            <i class="fab fa-x-twitter"></i>
+          <a href="https://x.com/Aravind__77" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+            <i class="fab fa-x-twitter" aria-hidden="true"></i>
           </a>
-          <a href="https://www.linkedin.com/in/aravind-subramanian179/" target="_blank" rel="noopener noreferrer">
-            <i class="fab fa-linkedin"></i>
+          <a href="https://www.linkedin.com/in/aravind-subramanian179/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <i class="fab fa-linkedin" aria-hidden="true"></i>
           </a>
-          <a href="https://www.youtube.com/@aravind.subramanian" target="_blank" rel="noopener noreferrer">
-            <i class="fab fa-youtube"></i> 
+          <a href="https://www.youtube.com/@aravind.subramanian" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <i class="fab fa-youtube" aria-hidden="true"></i>
           </a>
         </div>
       </div>
@@ -50,7 +77,7 @@
     <main>
       <section id="home">
         <h1>Aravind Subramanian</h1>
-          <p class="tagline">Autodidact | Entrepreneur | Techno-optimist</p>
+          <p class="tagline">Autodidact | Entrepreneur | Techno‑optimist</p>
           <div class="cta-buttons">
             <a href="#about" class="cta-button">About Me</a>
             <a href="#projects" class="cta-button">My Projects</a>
@@ -59,8 +86,61 @@
 
       <section id="about">
         <h2>About Me</h2>
-          <p>I'm a curiosity driven autodidact and techno-optimist with a keen interest in technology. My journey in the tech world has been driven by a desire to learn, create, and innovate. From coding websites to exploring new business ideas, I'm constantly pushing my boundaries and seeking new challenges.</p>
-          <p>Currently, I'm focused on honing my trading skills, building impactful websites, and exploring the intersection of technology and entrepreneurship. My goal is to leverage technology to solve real-world problems and create value for others.</p>
+          <p>I'm a curiosity‑driven autodidact and techno‑optimist with a keen interest in technology. My journey in the tech world has been driven by a desire to learn, create, and innovate. From coding websites to exploring new business ideas, I'm constantly pushing my boundaries and seeking new challenges.</p>
+          <p>Currently, I'm focused on honing my trading skills, building impactful websites, and exploring the intersection of technology and entrepreneurship. My goal is to leverage technology to solve real‑world problems and create value for others.</p>
+      </section>
+
+      <section id="projects" aria-labelledby="projects-title">
+        <h2 id="projects-title">Projects</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>Algo Trading Toolkit</h3>
+            <p>Backtesting utilities, risk controls, and execution helpers for personal trading.</p>
+            <div class="card-actions">
+              <a class="cta-button" href="#about">Learn More</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>Personal Knowledge Hub</h3>
+            <p>Lightweight notes and highlights site focused on speed and ergonomics.</p>
+            <div class="card-actions">
+              <a class="cta-button" href="#book-highlights">Highlights</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>Startup Landing Pages</h3>
+            <p>Clean, conversion‑focused pages built with semantic HTML and minimal JS.</p>
+            <div class="card-actions">
+              <a class="cta-button" href="#projects">See More</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="book-highlights" aria-labelledby="highlights-title">
+        <h2 id="highlights-title">Book Highlights</h2>
+        <div class="list">
+          <article class="list-item">
+            <h3>Skin in the Game</h3>
+            <p>Accountability sharpens decision‑making; asymmetries define real‑world risk.</p>
+          </article>
+          <article class="list-item">
+            <h3>The Almanack of Naval</h3>
+            <p>Specific knowledge, leverage, and long‑term games compound outcomes.</p>
+          </article>
+          <article class="list-item">
+            <h3>Zero to One</h3>
+            <p>Build monopolies by doing new things; competition is for losers.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="currently-reading" aria-labelledby="reading-title">
+        <h2 id="reading-title">Currently Reading</h2>
+        <ul class="reading-list">
+          <li>Atomic Habits — James Clear</li>
+          <li>Thinking, Fast and Slow — Daniel Kahneman</li>
+        </ul>
       </section>
     </main>
     

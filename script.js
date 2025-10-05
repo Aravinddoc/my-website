@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const internalLinks = document.querySelectorAll('a[href^="#"]');
   const ctaButtons = document.querySelectorAll('.cta-button');
   const themeToggle = document.getElementById('themeToggle');
+  const header = document.querySelector('header');
 
   // Navigation Menu Functions
   function toggleMenu() {
@@ -20,7 +21,11 @@ document.addEventListener('DOMContentLoaded', function() {
       if (navMenu) {
         navMenu.classList.add('opening');
       }
+      const isOpening = !body.classList.contains('menu-open');
       body.classList.toggle('menu-open');
+      if (hamburger) {
+        hamburger.setAttribute('aria-expanded', String(isOpening));
+      }
 
       // Wait for the menu to finish opening
       setTimeout(() => {
@@ -45,6 +50,9 @@ document.addEventListener('DOMContentLoaded', function() {
         navMenu.classList.remove('opening');
       }
       body.classList.remove('menu-open');
+      if (hamburger) {
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
     }, 200);
   }
 
@@ -99,12 +107,19 @@ document.addEventListener('DOMContentLoaded', function() {
         if (toggleText) {
           toggleText.textContent = `${theme} mode`;
         }
+        themeToggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
       }
     }
 
-    // Check for saved theme preference
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    setTheme(savedTheme);
+    // Check for saved theme preference; otherwise respect current attribute
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else {
+      const current = root.getAttribute('data-theme') || 'light';
+      if (toggleText) toggleText.textContent = `${current} mode`;
+      themeToggle.setAttribute('aria-pressed', current === 'dark' ? 'true' : 'false');
+    }
 
     // Listen for theme toggle clicks
     themeToggle.addEventListener('click', function() {
@@ -124,6 +139,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // Event Listeners
   if (hamburger) {
     hamburger.addEventListener('click', toggleMenu);
+    // Close on Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeMenu();
+      }
+    });
   }
 
   if (navLinks) {
@@ -132,6 +153,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.addEventListener('click', handleOutsideClick);
   window.addEventListener('resize', handleWindowResize);
+
+  // Header scrolled state for subtle shadow/background
+  const updateHeaderScrolled = () => {
+    if (!header) return;
+    if (window.scrollY > 8) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  };
+  updateHeaderScrolled();
+  window.addEventListener('scroll', updateHeaderScrolled, { passive: true });
+
+  // Active link highlighting
+  const sections = Array.from(document.querySelectorAll('main section[id]'));
+  const highlightActiveLink = () => {
+    const scrollPos = window.scrollY + 120; // header offset
+    let currentId = sections[0] ? sections[0].id : '';
+    for (const section of sections) {
+      if (section.offsetTop <= scrollPos) {
+        currentId = section.id;
+      }
+    }
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href) return;
+      const id = href.startsWith('#') ? href.slice(1) : '';
+      if (id === currentId) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  };
+  highlightActiveLink();
+  window.addEventListener('scroll', highlightActiveLink, { passive: true });
 
   if (internalLinks) {
     internalLinks.forEach(anchor => anchor.addEventListener('click', handleInternalLinkClick));
